@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import Tweets from './components/Tweets';
+import Tweets from './components/Tweets/Tweets';
 
 class App extends Component {
   constructor() {
@@ -23,11 +23,14 @@ class App extends Component {
       }
     }
   }
+
   render() {
     return (
       <div className="App">
-        <h1>Project X</h1>
-        <h2>Welcome {this.state.user.username}</h2>
+        <header>
+          <h1>Project X</h1>
+          <h2>Welcome {this.state.user.username}</h2>
+        </header>
         <Tweets tweets={this.state.user.tweets} />
       </div>
     );
