@@ -1,25 +1,37 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Tweets from './components/Tweets';
+
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      user: {
+        username: "CRHarding",
+        tweets: [
+          { 
+            timestamp: Date.now(),
+            uuid: "1234567",
+            username: "CRHarding",
+            content: "Lorem ipsum dolor sit amet",
+            likes: 0
+          }
+        ],
+        likedTweets: []
+      }
+    }
+  }
+  render() {
+    return (
+      <div className="App">
+        <h1>Project X</h1>
+        <h2>Welcome {this.state.user.username}</h2>
+        <Tweets tweets={this.state.user.tweets} />
+      </div>
+    );
+  }
 }
 
 export default App;
