@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Tweets from './components/Tweets/Tweets';
+import CreateTweet from './components/CreateTweet';
 
 class App extends Component {
   constructor() {
@@ -24,6 +25,21 @@ class App extends Component {
     }
   }
 
+  createTweet = (tweet) => {
+    tweet.timestamp = Date.now();
+    tweet.uuid = Math.floor(Math.random() * 100000);
+    tweet.username = "CRHarding";
+    tweet.likes = 0;
+
+    const user = this.state.user;
+
+    user.tweets.push(tweet);
+
+    this.setState({
+      user
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -31,6 +47,7 @@ class App extends Component {
           <h1>Project X</h1>
           <h2>Welcome {this.state.user.username}</h2>
         </header>
+        <CreateTweet createTweet={this.createTweet} />
         <Tweets tweets={this.state.user.tweets} />
       </div>
     );
