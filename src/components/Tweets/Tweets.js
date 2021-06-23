@@ -5,7 +5,7 @@ const Tweets = (props) => {
     return (
         <div>
           { props.tweets.map(tweet =>
-            <Tweet tweet={tweet} /> 
+            <Tweet tweet={tweet} />
           )}
         </div>
     )
