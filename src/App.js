@@ -51,6 +51,30 @@ class App extends Component {
     })
   }
 
+  submitEditProfile = (bio, username) => {
+    const user = this.state.user;
+    user.bio = bio;
+    user.username = username;
+
+    this.setState({
+      user,
+      editProfile: false
+    })
+  }
+
+  updateTweet = id => {
+    const tweets = this.state.tweets.map(tweet => {
+      if (tweet.uuid === id) {
+        tweet.likes += 1;
+      }
+      return tweet;
+    })
+    
+    this.setState({
+      tweets
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -59,11 +83,19 @@ class App extends Component {
           <h2>Welcome {this.state.user.username}</h2>
         </header>
         {this.state.editProfile ? 
-            <Form user={this.state.user} editProfile={this.editProfile} /> 
+            <Form 
+              user={this.state.user} 
+              editProfile={this.editProfile} 
+              submitEditProfile={this.submitEditProfile}
+            /> 
           : 
-            <Profile user={this.state.user} editProfile={this.editProfile} /> }
+            <Profile 
+              user={this.state.user} 
+              editProfile={this.editProfile} 
+            /> 
+        }
         <CreateTweet createTweet={this.createTweet} />
-        <Tweets tweets={this.state.tweets} />
+        <Tweets tweets={this.state.tweets} updateTweet={this.updateTweet} />
       </div>
     );
   }
