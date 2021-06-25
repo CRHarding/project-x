@@ -6,9 +6,30 @@ import CreateTweet from './components/CreateTweet';
 import Profile from './components/Profile/Profile';
 import Form from './components/Form/Form';
 
+import { Route, Link, withRouter } from 'react-router-dom';
+/*
+  Route ==> What the URL is pointing to
+              when you detect this url (with slugs / etc) deliver
+                  this content
+  Link  ==> ie a href (with extra fun stuff) send the url
+              to a specific place
+*/
+
+// Higher order functions
+/*
+
+  functions that take another in as an argument
+    1.) map / filter / reduce
+    const arr = [1, 2, 3, 4];
+    const doubleArr = arr.map(num =>
+      num * 2;
+    )
+*/
+// Higher order component
+
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       user: {
@@ -26,7 +47,6 @@ class App extends Component {
           likes: 0
         }
       ],
-      editProfile: false
     }
   }
 
@@ -45,12 +65,6 @@ class App extends Component {
     })
   }
 
-  editProfile = evt => {
-    this.setState({
-      editProfile: !this.state.editProfile
-    })
-  }
-
   submitEditProfile = (bio, username) => {
     const user = this.state.user;
     user.bio = bio;
@@ -60,6 +74,9 @@ class App extends Component {
       user,
       editProfile: false
     })
+
+    console.log(this.props.history)
+    this.props.history.push("/profile")
   }
 
   updateTweet = id => {
@@ -69,7 +86,7 @@ class App extends Component {
       }
       return tweet;
     })
-    
+
     this.setState({
       tweets
     })
@@ -79,26 +96,42 @@ class App extends Component {
     return (
       <div className="App">
         <header>
-          <h1>Project X</h1>
-          <h2>Welcome {this.state.user.username}</h2>
+          <div>
+            <h1><Link to="/">Project X</Link></h1>
+            <h2>Welcome {this.state.user.username}</h2>
+          </div>
+          <nav>
+            <ul>
+              <li><Link to="/profile">Profile</Link></li>
+              <li><Link to="/tweets">Tweets</Link></li>
+              <li><Link to="/tweets/add">Add Tweet</Link></li>
+            </ul>
+          </nav>
         </header>
-        {this.state.editProfile ? 
-            <Form 
-              user={this.state.user} 
-              editProfile={this.editProfile} 
-              submitEditProfile={this.submitEditProfile}
-            /> 
-          : 
-            <Profile 
-              user={this.state.user} 
-              editProfile={this.editProfile} 
-            /> 
-        }
-        <CreateTweet createTweet={this.createTweet} />
-        <Tweets tweets={this.state.tweets} updateTweet={this.updateTweet} />
+        <Route exact path="/profile" render={() =>
+          <Profile 
+            user={this.state.user} 
+            editProfile={this.editProfile} 
+          />
+        } />
+        <Route path="/profile/edit" render={() =>
+          <Form 
+            user={this.state.user} 
+            submitEditProfile={this.submitEditProfile} 
+          />
+        } />
+        <Route exact path="/tweets" render={() =>
+          <Tweets 
+            tweets={this.state.tweets} 
+            updateTweet={this.updateTweet} 
+          />
+        }/>
+        <Route path="/tweets/add" render={() =>
+          <CreateTweet createTweet={this.createTweet} />
+        } />
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);
